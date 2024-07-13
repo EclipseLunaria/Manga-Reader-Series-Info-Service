@@ -10,10 +10,10 @@ export const findSeries = async (req: Request, res: Response) => {
     return res.status(400).json({ error: "Search term is required" });
   }
   const searchTerm: string = req.query.term.toString();
-  const seriesUrl = `https://manganato.com/search/story/${searchTerm.replace(
-    " ",
-    "_"
-  )}`;
+  const seriesUrl = `https://manganato.com/search/story/${searchTerm
+    .replace(/ /g, "_")
+    .toLowerCase()}`;
+  console.log(seriesUrl);
   const $ = await extractPageHtml(seriesUrl);
   if (!$) {
     res.status(500).json({ error: "Internal server error" });
