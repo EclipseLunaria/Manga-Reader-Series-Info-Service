@@ -11,11 +11,5 @@ export const extractPageHtml = async (url: string) => {
     console.log(error);
   }
   return void 0;
-  // return axios
-  //   .get(url)
-  //   .then((response) => {
-  //     html = response.data;
-  //     return cheerio.load(response.data);
-  //   })
-  //   .catch((error) => {});
+
 };

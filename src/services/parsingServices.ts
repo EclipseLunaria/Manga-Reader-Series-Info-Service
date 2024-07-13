@@ -7,7 +7,6 @@ const parseFields = async ($: CheerioAPI, config: ParsingConfig) => {
 
   for (const [key, func] of Object.entries(config)) {
     const result = await func($);
-    console.log(result);
     seriesInfo[key] = result;
     parsingPromises.push(seriesInfo[key]);
   }
