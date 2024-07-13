@@ -10,6 +10,4 @@ export const extractPageHtml = async (url: string) => {
   } catch (error: any) {
     console.log(error);
   }
-  return void 0;
-
 };
