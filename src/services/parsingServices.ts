@@ -1,11 +1,11 @@
 import { CheerioAPI } from "cheerio";
-import { seriesParsingConfig } from "../config/parsingConfig";
+import { ParsingConfig } from "../config/parsingConfig";
 
-const parseSeriesInfo = async ($: CheerioAPI) => {
+const parseFields = async ($: CheerioAPI, config: ParsingConfig) => {
   const seriesInfo: { [key: string]: any } = {};
   const parsingPromises = [];
 
-  for (const [key, func] of Object.entries(seriesParsingConfig)) {
+  for (const [key, func] of Object.entries(config)) {
     const result = await func($);
     console.log(result);
     seriesInfo[key] = result;
@@ -16,4 +16,4 @@ const parseSeriesInfo = async ($: CheerioAPI) => {
   return seriesInfo;
 };
 
-export { parseSeriesInfo };
+export { parseFields };

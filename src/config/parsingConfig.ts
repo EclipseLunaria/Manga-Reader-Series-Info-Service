@@ -1,7 +1,8 @@
 import { CheerioAPI } from "cheerio";
 
 export type ParsingFunction = ($: CheerioAPI) => any;
-interface ParsingConfig {
+
+export interface ParsingConfig {
   [key: string]: ParsingFunction;
 }
 
@@ -43,4 +44,14 @@ const seriesParsingConfig: ParsingConfig = {
   totalChapters: ($) => $(".row-content-chapter").find("li").get().length,
 };
 
-export { seriesParsingConfig };
+const searchResultConfig: ParsingConfig = {
+  title: ($) => $(".item-right").find("h3").text().trim(),
+  link: ($) => $(".item-right a").attr("href"),
+  image: ($) => $(".item-img img").attr("src"),
+  author: ($) => $(".item-right .item-author").text(),
+  rating: ($) => $(".item-rate").text(),
+  description: ($) => $(".item-right .item-summary").text(),
+  seriesId: ($) => $(".item-right a").attr("href")?.split("-")[1],
+};
+
+export { seriesParsingConfig, searchResultConfig };
