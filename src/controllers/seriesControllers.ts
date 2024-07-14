@@ -3,6 +3,12 @@ import { Request, Response } from "express";
 import { parseFields } from "../services/parsingServices";
 import { seriesParsingConfig } from "../config/parsingConfig";
 
+/**
+ * Parses the series information using the mangaId parameter from the request.
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns The parsed series information or an error response.
+ */
 export const parseSeriesInfoController = async (
   req: Request,
   res: Response
