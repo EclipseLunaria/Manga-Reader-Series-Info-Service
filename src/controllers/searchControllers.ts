@@ -25,12 +25,12 @@ export const findSeries = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
     return;
   }
+  const searchResults = $(".search-story-item")
+    .toArray()
+    .map((element$) => parseFields(load(element$), searchResultConfig));
 
-  let searchResults: any[] = [];
-  for (const element$ of $(".search-story-item").toArray()) {
-    const result = await parseFields(load(element$), searchResultConfig);
-    searchResults.push(result);
+  const resolvedResults = await Promise.all(searchResults);
+  res.status(200).json(resolvedResults);
+
   }
-  res.status(200).json(searchResults);
-  return;
-};
+
