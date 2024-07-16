@@ -8,6 +8,9 @@ RUN npm install
 
 COPY . /app
 
+RUN npx tsc
+
+
 EXPOSE ${PORT}
 
 CMD ["npm", "start"]
