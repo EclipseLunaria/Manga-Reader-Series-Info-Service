@@ -1,8 +1,0 @@
-version: "3.7"
-services:
-  api:
-    build: .
-    environment:
-      - PORT=6968
-    ports:
-      - 6968:6968
