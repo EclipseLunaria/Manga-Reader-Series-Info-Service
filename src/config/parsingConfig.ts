@@ -12,8 +12,9 @@ const seriesParsingConfig: ParsingConfig = {
     $("td.table-label:has(.info-author)")
       .next("td.table-value")
       .find("a")
-      .text()
-      .trim(),
+      .toArray()
+      .map((elem) => $(elem).text())
+      .join(", "),
   image: ($) => $(".info-image").find("img").attr("src") ?? "",
   rating: ($) => ({
     ratingAvg: $("em[property='v:average']").text(),
