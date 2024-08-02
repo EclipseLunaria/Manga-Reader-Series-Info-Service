@@ -55,4 +55,19 @@ const searchResultConfig: ParsingConfig = {
   seriesId: ($) => $(".item-right a").attr("href")?.split("-")[1],
 };
 
-export { seriesParsingConfig, searchResultConfig };
+const chapterParsingConfig: ParsingConfig = {
+  chapters: ($) =>
+    $(".row-content-chapter")
+      .find("li")
+      .map((i, elem) => ({
+        title: $(elem).find("a").text(),
+        link: $(elem).find("a").attr("href"),
+        uploaded: $(elem).find("span .chapter-time").text(),
+      }))
+      .get()
+      .reverse(),
+  totalChapters: ($) => $(".row-content-chapter").find("li").get().length,
+  seriesId: ($) => $(".item-right a").attr("href")?.split("-")[1],
+};
+
+export { seriesParsingConfig, searchResultConfig, chapterParsingConfig };
