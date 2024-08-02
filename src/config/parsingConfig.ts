@@ -62,7 +62,7 @@ const chapterParsingConfig: ParsingConfig = {
       .map((i, elem) => ({
         title: $(elem).find("a").text(),
         link: $(elem).find("a").attr("href"),
-        uploaded: $(elem).find("span .chapter-time").text(),
+        uploaded: $(elem).find(".chapter-time").text(),
       }))
       .get()
       .reverse(),
