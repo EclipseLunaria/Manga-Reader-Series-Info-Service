@@ -12,10 +12,10 @@ import { extractPageHtml } from "../utils";
  * @returns A JSON response with the search results or an error response.
  */
 export const findSeries = async (req: Request, res: Response) => {
-  if (!req.query.term) {
+  if (!req.query.q) {
     return res.status(400).json({ error: "Search term is required" });
   }
-  const searchTerm: string = req.query.term.toString();
+  const searchTerm: string = req.query.q.toString();
   const seriesUrl = `https://manganato.com/search/story/${searchTerm
     .replace(/ /g, "_")
     .toLowerCase()}`;
@@ -31,6 +31,4 @@ export const findSeries = async (req: Request, res: Response) => {
 
   const resolvedResults = await Promise.all(searchResults);
   res.status(200).json(resolvedResults);
-
-  }
-
+};

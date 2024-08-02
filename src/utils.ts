@@ -1,5 +1,5 @@
 import axios from "axios";
-import cheerio from "cheerio";
+import { load } from "cheerio";
 
 /**
  * Extracts the HTML content of a web page using the provided URL.
@@ -11,8 +11,11 @@ export const extractPageHtml = async (url: string) => {
   try {
     const response = await axios.get(url);
     html = response.data;
-    return cheerio.load(html);
+    return load(html);
   } catch (error: any) {
     console.log(error);
   }
 };
+
+export const getMangaUrl = (mangaId: string) =>
+  `https://chapmanganato.to/manga-${mangaId}`;
