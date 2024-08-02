@@ -12,6 +12,4 @@ export const seriesRouter = Router();
 
 seriesRouter.get("/manga/:mangaId/", seriesInfoController);
 
-seriesRouter.get("/manga/:mangaId/chapters", chapterListController);
-
 seriesRouter.get("/manga/:mangaId/:field", fieldController);
