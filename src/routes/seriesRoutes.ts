@@ -1,7 +1,8 @@
 import { Router } from "express";
 import {
-  parseChapterListController,
-  parseSeriesInfoController,
+  seriesInfoController,
+  chapterListController,
+  fieldController,
 } from "../controllers/seriesControllers";
 
 /**
@@ -9,6 +10,8 @@ import {
  */
 export const seriesRouter = Router();
 
-seriesRouter.get("/manga/:mangaId/", parseSeriesInfoController);
+seriesRouter.get("/manga/:mangaId/", seriesInfoController);
 
-seriesRouter.get("/manga/:mangaId/chapters", parseChapterListController);
+seriesRouter.get("/manga/:mangaId/chapters", chapterListController);
+
+seriesRouter.get("/manga/:mangaId/:field", fieldController);

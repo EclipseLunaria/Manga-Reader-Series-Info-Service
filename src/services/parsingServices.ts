@@ -1,5 +1,5 @@
 import { CheerioAPI } from "cheerio";
-import { ParsingConfig } from "../config/parsingConfig";
+import { ParsingConfig, ParsingFunction } from "../config/parsingConfig";
 
 /**
  * Parses the fields of a CheerioAPI object based on the provided configuration.
@@ -21,4 +21,15 @@ const parseFields = async ($: CheerioAPI, config: ParsingConfig) => {
   return seriesInfo;
 };
 
-export { parseFields };
+const parseField = async (
+  $: CheerioAPI,
+  config: ParsingConfig,
+  field: string
+) => {
+  if (!config[field]) {
+    return null;
+  }
+  return await config[field]($);
+};
+
+export { parseFields, parseField };
