@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   seriesInfoController,
-  chapterListController,
   fieldController,
 } from "../controllers/seriesControllers";
 

@@ -1,10 +1,7 @@
 import { extractPageHtml, getMangaUrl } from "../utils";
 import { Request, Response } from "express";
 import { parseField, parseFields } from "../services/parsingServices";
-import {
-  chapterParsingConfig,
-  seriesParsingConfig,
-} from "../config/parsingConfig";
+import { seriesParsingConfig } from "../config/parsingConfig";
 
 /**
  * Parses the series information using the mangaId parameter from the request.
@@ -23,25 +20,10 @@ const seriesInfoController = async (req: Request, res: Response) => {
       return;
     }
 
-    const seriesInfo = await parseFields($, seriesParsingConfig);
-    res.status(200).json(seriesInfo);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-    return res;
-  }
-};
-
-const chapterListController = async (req: Request, res: Response) => {
-  const { mangaId } = req.params;
-  const seriesUrl = getMangaUrl(mangaId);
-  try {
-    const $ = await extractPageHtml(seriesUrl);
-    if (!$) {
-      res.status(500).json({ error: "Internal server error" });
-      return;
-    }
-
-    const seriesInfo = await parseFields($, chapterParsingConfig);
+    const seriesInfo = {
+      mangaId: mangaId,
+      ...(await parseFields($, seriesParsingConfig)),
+    };
     res.status(200).json(seriesInfo);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
@@ -69,4 +51,4 @@ const fieldController = async (req: Request, res: Response) => {
   }
 };
 
-export { seriesInfoController, chapterListController, fieldController };
+export { seriesInfoController, fieldController };
