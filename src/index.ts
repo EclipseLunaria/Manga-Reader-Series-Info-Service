@@ -6,6 +6,7 @@ import { seriesRouter } from "./routes/seriesRoutes";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 const port = process.env.PORT || 6901;
 
 app.use("/search", searchRouter);

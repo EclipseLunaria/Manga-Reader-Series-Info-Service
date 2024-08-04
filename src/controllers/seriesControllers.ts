@@ -2,6 +2,8 @@ import { extractPageHtml, getMangaUrl } from "../utils";
 import { Request, Response } from "express";
 import { parseField, parseFields } from "../services/parsingServices";
 import { seriesParsingConfig } from "../config/parsingConfig";
+import axios from "axios";
+import env from "../env";
 
 /**
  * Parses the series information using the mangaId parameter from the request.
@@ -24,6 +26,11 @@ const seriesInfoController = async (req: Request, res: Response) => {
       mangaId: mangaId,
       ...(await parseFields($, seriesParsingConfig)),
     };
+    const response = await axios.post(
+      `http://localhost:${env.DATA_LAYER_PORT}/series/upload`,
+      seriesInfo
+    );
+    console.log(response.status);
     res.status(200).json(seriesInfo);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
