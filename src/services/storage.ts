@@ -28,9 +28,7 @@ const fetchSeriesField = async (seriesId: string, field: string) => {
   // MAYBE: Optimize this function to fetch only the requested field
   try {
     const response = await axios.get(
-      field === "chapters"
-        ? `http://localhost:${6999}/series/chapters/${seriesId}`
-        : `http://localhost:${6999}/series/${seriesId}/${field}`
+      `http://localhost:${6999}/series/${seriesId}/${field}`
     );
 
     return response.data;

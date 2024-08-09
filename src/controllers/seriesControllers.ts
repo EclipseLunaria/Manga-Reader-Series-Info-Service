@@ -62,6 +62,7 @@ const fieldController = async (req: Request, res: Response) => {
       return;
     }
     const seriesInfo = await parseField($, seriesParsingConfig, field);
+    await storeSeriesInfo(seriesInfo);
     if (!seriesInfo) {
       res.status(404).json({ error: "Field not found" });
     }
