@@ -20,11 +20,12 @@ const seriesInfoController = async (req: Request, res: Response) => {
       res.status(500).json({ error: "Internal server error" });
       return;
     }
-
-    storeSeriesInfo({
+    const seriesInfo = {
       mangaId: mangaId,
       ...(await parseFields($, seriesParsingConfig)),
-    });
+    };
+    storeSeriesInfo(seriesInfo);
+    res.status(200).json(seriesInfo);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
     return res;
