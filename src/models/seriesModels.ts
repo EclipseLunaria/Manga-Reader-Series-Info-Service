@@ -10,3 +10,4 @@ export interface MangaSeriesData {
   totalChapters: number;
   chapters: { title: string; link: string }[];
 }
+

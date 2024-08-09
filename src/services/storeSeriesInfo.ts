@@ -1,11 +1,10 @@
 import axios from "axios";
 
-// MAYBE: allow for dynamic port
-const DATA_LAYER_PORT = 6999;
+
 const storeSeriesInfo = async (seriesInfo: any) => {
   try {
     const response = await axios.post(
-      `http://localhost:${DATA_LAYER_PORT}/series/upload`,
+      `http://localhost:${6999}/series/upload`,
       seriesInfo
     );
     console.log(response.status);

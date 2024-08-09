@@ -1,5 +1,7 @@
 import axios from "axios";
 import { load } from "cheerio";
+import { Connection } from "pg";
+import DB_CONFIG from "../db.config.json";
 
 /**
  * Extracts the HTML content of a web page using the provided URL.
@@ -19,3 +21,17 @@ export const extractPageHtml = async (url: string) => {
 
 export const getMangaUrl = (mangaId: string) =>
   `https://chapmanganato.to/manga-${mangaId}`;
+
+const createConnection = async () => {
+  const connection = new Connection({
+    user: DB_CONFIG.DB_USER,
+    host: DB_CONFIG.DB_HOST,
+    database: DB_CONFIG.DB_NAME,
+    password: DB_CONFIG.DB_PASS,
+  });
+  return connection;
+};
+
+const closeConnection = async (connection: Connection) => {
+  connection.end();
+};
