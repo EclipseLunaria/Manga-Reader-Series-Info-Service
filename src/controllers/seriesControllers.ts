@@ -24,6 +24,7 @@ const seriesInfoController = async (req: Request, res: Response) => {
       mangaId: mangaId,
       ...(await parseFields($, seriesParsingConfig)),
     };
+    console.log(seriesInfo, "parsed");
     storeSeriesInfo(seriesInfo);
     res.status(200).json(seriesInfo);
   } catch (error: any) {
