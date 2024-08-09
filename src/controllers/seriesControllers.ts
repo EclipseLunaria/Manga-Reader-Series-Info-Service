@@ -1,8 +1,12 @@
 import { Request, Response } from "express";
 import { extractPageHtml, getMangaUrl } from "../utils";
-import { parseField, parseFields } from "../services/parsingServices";
+import { parseField, parseFields } from "../services/parsing";
 import { seriesParsingConfig } from "../config/parsingConfig";
-import { storeSeriesInfo } from "../services/storeSeriesInfo";
+import {
+  fetchSeriesField,
+  getSeriesInfo,
+  storeSeriesInfo,
+} from "../services/storage";
 
 /**
  * Parses the series information using the mangaId parameter from the request.
@@ -12,8 +16,16 @@ import { storeSeriesInfo } from "../services/storeSeriesInfo";
  */
 const seriesInfoController = async (req: Request, res: Response) => {
   const { mangaId } = req.params;
-  const seriesUrl = getMangaUrl(mangaId);
 
+  // Check if the series information is already stored in the database
+  const seriesPrefetched = await getSeriesInfo(mangaId);
+  if (seriesPrefetched) {
+    res.status(200).json(seriesPrefetched);
+    console.log("Series info fetched from database");
+    return;
+  }
+
+  const seriesUrl = getMangaUrl(mangaId);
   try {
     const $ = await extractPageHtml(seriesUrl);
     if (!$) {
@@ -24,7 +36,6 @@ const seriesInfoController = async (req: Request, res: Response) => {
       mangaId: mangaId,
       ...(await parseFields($, seriesParsingConfig)),
     };
-    console.log(seriesInfo, "parsed");
     storeSeriesInfo(seriesInfo);
     res.status(200).json(seriesInfo);
   } catch (error: any) {
@@ -35,6 +46,14 @@ const seriesInfoController = async (req: Request, res: Response) => {
 
 const fieldController = async (req: Request, res: Response) => {
   const { mangaId, field } = req.params;
+
+  // Check if the field is already stored in the database
+  const seriesPrefetched = await fetchSeriesField(mangaId, field);
+  if (seriesPrefetched) {
+    res.status(200).json(seriesPrefetched);
+    console.log("Field fetched from database");
+    return;
+  }
   const seriesUrl = getMangaUrl(mangaId);
   try {
     const $ = await extractPageHtml(seriesUrl);

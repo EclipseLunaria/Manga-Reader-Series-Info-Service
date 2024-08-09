@@ -2,7 +2,7 @@ import { load } from "cheerio";
 import { Request, Response } from "express";
 
 import { searchResultConfig } from "../config/parsingConfig";
-import { parseFields } from "../services/parsingServices";
+import { parseFields } from "../services/parsing";
 import { extractPageHtml } from "../utils";
 
 /**

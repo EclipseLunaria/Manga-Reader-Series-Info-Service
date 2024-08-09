@@ -46,6 +46,7 @@ const seriesParsingConfig: ParsingConfig = {
           .pop(),
         title: $(elem).find("a").text(),
         link: $(elem).find("a").attr("href"),
+        // MAYBE: Add date
       }))
       .get()
       .reverse(),
