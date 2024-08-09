@@ -16,8 +16,9 @@
 
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
+
   },
-  "include": ["src/**/*", "db.config.json"],
+  "include": ["src/**/*"],
   "exclude": [
     "node_modules"
   ] /* Specify an array of glob patterns that match files to be included in the program. */
