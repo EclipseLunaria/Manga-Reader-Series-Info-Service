@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import { searchRouter } from "./routes/searchRoutes";
 import { seriesRouter } from "./routes/seriesRoutes";
@@ -12,7 +12,7 @@ app.use("/search", searchRouter);
 
 app.use("/", seriesRouter);
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Series Info Service is online.");
 });
 
