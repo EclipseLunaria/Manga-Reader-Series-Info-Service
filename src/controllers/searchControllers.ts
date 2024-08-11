@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import { searchResultConfig } from "../config/parsingConfig";
 import { parseFields } from "../services/parsing";
 import { extractPageHtml } from "../utils";
+import { searchSeries } from "../services/search";
 
 export const findSeries = async (req: Request, res: Response) => {
   const page =
@@ -29,3 +30,16 @@ export const findSeries = async (req: Request, res: Response) => {
   const resolvedResults = await Promise.all(searchResults);
   res.status(200).json(resolvedResults);
 };
+
+export const newSearchSeries = async (req: Request, res: Response) => {
+  const page =
+    req.query.page && parseInt(req.query.page.toString()) > 0
+      ? parseInt(req.query.page.toString())
+      : 1;
+  if (!req.query.q) {
+    return res.status(400).json({ error: "Search term is required" });
+  }
+  const searchTerm: string = req.query.q.toString();
+  const searchResults = await searchSeries(page, searchTerm);
+  res.status(200).json(searchResults);
+}
