@@ -43,7 +43,6 @@ const storeSeriesInfo = async (seriesInfo: any) => {
       `http://localhost:${6999}/series/upload`,
       seriesInfo
     );
-    console.log(response.status);
   } catch (error: any) {
     console.log("Unable to store series information");
     console.error(error.message);
