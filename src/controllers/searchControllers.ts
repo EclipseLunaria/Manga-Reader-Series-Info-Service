@@ -1,11 +1,9 @@
 import { load } from "cheerio";
 import { Request, Response } from "express";
-
 import { searchResultConfig } from "../config/parsingConfig";
 import { parseFields } from "../services/parsing";
-import { extractPageHtml } from "../utils";
-import { searchSeries } from "../services/search";
-
+import { extractPageHtml, parsePageNumber } from "../utils";
+import { searchSeriesService } from "../services/search";
 export const findSeries = async (req: Request, res: Response) => {
   const page =
     req.query.page && parseInt(req.query.page.toString()) > 0
@@ -32,14 +30,18 @@ export const findSeries = async (req: Request, res: Response) => {
 };
 
 export const newSearchSeries = async (req: Request, res: Response) => {
-  const page =
-    req.query.page && parseInt(req.query.page.toString()) > 0
-      ? parseInt(req.query.page.toString())
-      : 1;
-  if (!req.query.q) {
+  const page = parsePageNumber(req.query.page as string) || 1;
+  const searchTerm = req.query.q;
+  if (!searchTerm) {
     return res.status(400).json({ error: "Search term is required" });
   }
-  const searchTerm: string = req.query.q.toString();
-  const searchResults = await searchSeries(page, searchTerm);
-  res.status(200).json(searchResults);
-}
+  try {
+    const searchResponse = await searchSeriesService(
+      page,
+      searchTerm.toString()
+    );
+    res.status(200).json(searchResponse);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};

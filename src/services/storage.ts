@@ -13,10 +13,9 @@ const hasSeriesInfo = async (seriesId: string) => {
 };
 
 const getSeriesInfo = async (seriesId: string) => {
+  const url = `http://localhost:${6999}/series/${seriesId}`;
   try {
-    const response = await axios.get(
-      `http://localhost:${6999}/series/${seriesId}`
-    );
+    const response = await axios.get(url);
     return response.data;
   } catch (error: any) {
     console.log("Unable to retrieve series information");

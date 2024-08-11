@@ -1,60 +1,47 @@
-import { extractPageHtml } from "../utils";
-import { parseFields } from "./parsing";
-import { seriesParsingConfig } from "../config/parsingConfig";
-const searchSeries = async (page: number, searchTerm: string) => {
-    const seriesUrl = `https://manganato.com/search/story/${searchTerm
-        .replace(/ /g, "_")
-        .toLowerCase()}?page=${page}`;
-    const $ = await extractPageHtml(seriesUrl);
-    if (!$) {
-        throw new Error("Internal server error");
-    }
-    const searchResults = $(".search-story-item")
-        .toArray()
-        .map((element$) => {
-            const imageHref = $(element$).find(".item-img").attr("href");
-            if (!imageHref) {
-                return;
-            }
-            return parseSeriesInfo(imageHref);
-        });
+import { CheerioAPI } from "cheerio";
+import { extractPageHtml, parseSeriesInfo } from "../utils";
+import { MangaSearchResponse } from "../models/searchModels";
 
-    const resolvedResults = await Promise.all(searchResults);
-    return resolvedResults;
-}
+const searchSeriesService = async (page: number, searchTerm: string) => {
+  const seriesUrl = `https://manganato.com/search/story/${searchTerm
+    .replace(/ /g, "_")
+    .toLowerCase()}?page=${page}`;
+  const $ = await extractPageHtml(seriesUrl);
+  if (!$) {
+    throw new Error("Internal server error");
+  }
+  const searchResponse: MangaSearchResponse = {
+    page: page,
+    totalPages: await extractTotalPages($),
+    results: await extractSearchResults($),
+    totalResults: await extractTotalResults($),
+  };
+  return searchResponse;
+};
+const extractTotalPages = async ($: CheerioAPI) => {
+  const totalPages = $(".page-last").text();
+  return totalPages ? parseInt(totalPages) : 1;
+};
 
-export { searchSeries };
-// parse series info
-const parseSeriesInfo = async (url: string) => {
-    console.log("Parsing series info from: ", url);
-    const seriesUrl = url;
-    const $ = await extractPageHtml(seriesUrl);
-    if (!$) {
-        throw new Error("Internal server error");
-    }
-    const seriesInfo = parseFields($, seriesParsingConfig);
-    return seriesInfo;
-}
+const extractTotalResults = async ($: CheerioAPI) => {
+  const totalResults = $(".group-qty")
+    .text()
+    .split(" ")
+    .pop()
+    ?.replace(/,/g, "");
+  return totalResults ? parseInt(totalResults) : -1;
+};
+const extractSearchResults = async ($: CheerioAPI) => {
+  const searchResults = $(".search-story-item")
+    .toArray()
+    .map(async (element$) => {
+      const imageHref = $(element$).find(".item-img").attr("href");
+      if (!imageHref) {
+        return {};
+      }
+      return await parseSeriesInfo(imageHref);
+    });
 
-//     const page =
-//     req.query.page && parseInt(req.query.page.toString()) > 0
-//       ? parseInt(req.query.page.toString())
-//       : 1;
-//   if (!req.query.q) {
-//     return res.status(400).json({ error: "Search term is required" });
-//   }
-//   const searchTerm: string = req.query.q.toString();
-//   const seriesUrl = `https://manganato.com/search/story/${searchTerm
-//     .replace(/ /g, "_")
-//     .toLowerCase()}?page=${page}`;
-//   const $ = await extractPageHtml(seriesUrl);
-//   if (!$) {
-//     res.status(500).json({ error: "Internal server error" });
-//     return;
-//   }
-//   const searchResults = $(".search-story-item")
-//     .toArray()
-//     .map((element$) => parseFields(load(element$), searchResultConfig));
-
-//   const resolvedResults = await Promise.all(searchResults);
-//   res.status(200).json(resolvedResults);
+  return searchResults;
+};
+export { searchSeriesService };
