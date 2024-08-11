@@ -25,7 +25,6 @@ const getSeriesInfo = async (seriesId: string) => {
 };
 
 const fetchSeriesField = async (seriesId: string, field: string) => {
-  // MAYBE: Optimize this function to fetch only the requested field
   try {
     const response = await axios.get(
       `http://localhost:${6999}/series/${seriesId}/${field}`
