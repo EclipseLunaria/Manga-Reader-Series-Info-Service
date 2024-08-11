@@ -9,7 +9,7 @@ import { ParsingConfig, ParsingFunction } from "../config/parsingConfig";
  */
 const parseFields = async ($: CheerioAPI, config: ParsingConfig) => {
   const seriesInfo: { [key: string]: any } = {};
-  const parsingPromises = [];
+  const parsingPromises: Promise<any>[] = [];
 
   for (const [key, func] of Object.entries(config)) {
     const result = await func($);
