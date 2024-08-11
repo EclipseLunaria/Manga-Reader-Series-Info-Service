@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import commonRouter from "./routes/shared";
 import { searchRouter } from "./routes/searchRoutes";
 import { seriesRouter } from "./routes/seriesRoutes";
 
@@ -13,7 +12,6 @@ app.use("/search", searchRouter);
 
 app.use("/", seriesRouter);
 
-app.use("/common", commonRouter);
 app.get("/", (req, res) => {
   res.send("Series Info Service is online.");
 });
