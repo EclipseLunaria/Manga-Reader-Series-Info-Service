@@ -35,7 +35,6 @@ const parseSeriesInfo = async (url: string) => {
   const seriesPrefetched = await trySeriesPrefetch(mangaId);
 
   if (seriesPrefetched) {
-    console.log("Series info fetched from database");
     return seriesPrefetched;
   }
 
@@ -48,13 +47,14 @@ const parseSeriesInfo = async (url: string) => {
     mangaId: mangaId,
     ...(await parseFields($, seriesParsingConfig)),
   };
-  storeSeriesInfo(seriesInfo);
+  await storeSeriesInfo(seriesInfo);
   return seriesInfo as MangaSeriesData;
 };
 
 const trySeriesPrefetch = async (mangaId: string) => {
   const seriesPrefetched = await getSeriesInfo(mangaId);
   if (seriesPrefetched) {
+    console.log("Series info fetched from database", seriesPrefetched);
     return seriesPrefetched;
   }
   return null;
