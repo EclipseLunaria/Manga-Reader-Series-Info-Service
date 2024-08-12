@@ -13,13 +13,14 @@ const searchSeriesService = async (page: number, searchTerm: string) => {
   const searchResponse: MangaSearchResponse = {
     page: page,
     totalPages: await extractTotalPages($),
-    results: await extractSearchResults($),
     totalResults: await extractTotalResults($),
+    results: await extractSearchResults($),
   };
   return searchResponse;
 };
 const extractTotalPages = async ($: CheerioAPI) => {
-  const totalPages = $(".page-last").text();
+  const totalPagesText = $(".page-last").text();
+  const totalPages = totalPagesText.match(/\((\d+)\)/)?.[1];
   return totalPages ? parseInt(totalPages) : 1;
 };
 
@@ -42,6 +43,6 @@ const extractSearchResults = async ($: CheerioAPI) => {
       return await parseSeriesInfo(imageHref);
     });
 
-  return searchResults;
+  return Promise.all(searchResults);
 };
 export { searchSeriesService };
