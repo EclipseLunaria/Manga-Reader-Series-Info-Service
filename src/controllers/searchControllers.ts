@@ -1,33 +1,7 @@
-import { load } from "cheerio";
 import { Request, Response } from "express";
-import { searchResultConfig } from "../config/parsingConfig";
-import { parseFields } from "../services/parsing";
-import { extractPageHtml, parsePageNumber } from "../utils";
+import { parsePageNumber } from "../utils";
 import { latestSeriesService, searchSeriesService } from "../services/search";
-export const findSeries = async (req: Request, res: Response) => {
-  const page =
-    req.query.page && parseInt(req.query.page.toString()) > 0
-      ? parseInt(req.query.page.toString())
-      : 1;
-  if (!req.query.q) {
-    return res.status(400).json({ error: "Search term is required" });
-  }
-  const searchTerm: string = req.query.q.toString();
-  const seriesUrl = `https://manganato.com/search/story/${searchTerm
-    .replace(/ /g, "_")
-    .toLowerCase()}?page=${page}`;
-  const $ = await extractPageHtml(seriesUrl);
-  if (!$) {
-    res.status(500).json({ error: "Internal server error" });
-    return;
-  }
-  const searchResults = $(".search-story-item")
-    .toArray()
-    .map((element$) => parseFields(load(element$), searchResultConfig));
-
-  const resolvedResults = await Promise.all(searchResults);
-  res.status(200).json(resolvedResults);
-};
+import { SearchCategory } from "../types";
 
 export const newSearchSeries = async (req: Request, res: Response) => {
   const page = parsePageNumber(req.query.page as string) || 1;
@@ -45,15 +19,18 @@ export const newSearchSeries = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+const getSeriesByType =
+  (type: SearchCategory) => async (req: Request, res: Response) => {
+    const page = parsePageNumber(req.query.page as string) || 1;
 
-export const latestSeries = async (req: Request, res: Response) => {
-  const page = parsePageNumber(req.query.page as string) || 1;
-  console.log(page);
+    try {
+      const searchResponse = await latestSeriesService(page, type);
+      res.status(200).json(searchResponse);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  };
 
-  try {
-    const searchResponse = await latestSeriesService(page);
-    res.status(200).json(searchResponse);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-};
+export const latestSeries = getSeriesByType("last_updated");
+export const popularSeries = getSeriesByType("popular");
+export const newestSeries = getSeriesByType("newest");
