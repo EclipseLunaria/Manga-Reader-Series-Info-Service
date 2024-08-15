@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { searchResultConfig } from "../config/parsingConfig";
 import { parseFields } from "../services/parsing";
 import { extractPageHtml, parsePageNumber } from "../utils";
-import { searchSeriesService } from "../services/search";
+import { latestSeriesService, searchSeriesService } from "../services/search";
 export const findSeries = async (req: Request, res: Response) => {
   const page =
     req.query.page && parseInt(req.query.page.toString()) > 0
@@ -40,6 +40,18 @@ export const newSearchSeries = async (req: Request, res: Response) => {
       page,
       searchTerm.toString()
     );
+    res.status(200).json(searchResponse);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const latestSeries = async (req: Request, res: Response) => {
+  const page = parsePageNumber(req.query.page as string) || 1;
+  console.log(page);
+
+  try {
+    const searchResponse = await latestSeriesService(page);
     res.status(200).json(searchResponse);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
