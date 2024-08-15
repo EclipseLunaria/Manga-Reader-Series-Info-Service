@@ -1,9 +1,9 @@
 import axios from "axios";
 import { load } from "cheerio";
-import { seriesParsingConfig } from "./config/parsingConfig";
-import { parseFields } from "./services/parsing";
-import { MangaSeriesData } from "./models/seriesModels";
-import { getSeriesInfo, storeSeriesInfo } from "./services/storage";
+import { seriesParsingConfig } from "../config/parsingConfig";
+import { parseFields } from "../services/parsing";
+import { MangaSeriesData } from "../models/seriesModels";
+import { getSeriesInfo, storeSeriesInfo } from "../services/storage";
 /**
  * Extracts the HTML content of a web page using the provided URL.
  * @param url - The URL of the web page to extract HTML from.
@@ -17,6 +17,7 @@ const extractPageHtml = async (url: string) => {
     return load(html);
   } catch (error: any) {
     console.log(error);
+    throw new Error("Internal server error");
   }
 };
 

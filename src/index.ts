@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 const port = process.env.PORT || 6901;
 
-app.use("/search", searchRouter);
+app.use("/", searchRouter);
 
 app.use("/", seriesRouter);
 
