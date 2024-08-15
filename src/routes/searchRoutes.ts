@@ -10,7 +10,7 @@ export const searchRouter = Router();
 
 searchRouter.get("/search", searchSeries);
 
-searchRouter.get("/latest/update", latestSeries);
+searchRouter.get("/latest/updated", latestSeries);
 
 searchRouter.get("/latest/added", newestSeries);
 
