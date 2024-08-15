@@ -27,13 +27,13 @@ const parsePageNumber = (pageString: string) => {
     : 1;
 };
 
-const getMangaUrl = (mangaId: string) =>
-  `https://chapmanganato.to/manga-${mangaId}`;
+const getMangaUrl = (manga_id: string) =>
+  `https://chapmanganato.to/manga-${manga_id}`;
 
 const parseSeriesInfo = async (url: string) => {
   console.log("Parsing series info from: ", url);
-  const mangaId = url.split("-")[1];
-  const seriesPrefetched = await trySeriesPrefetch(mangaId);
+  const manga_id = url.split("-")[1];
+  const seriesPrefetched = await trySeriesPrefetch(manga_id);
 
   if (seriesPrefetched) {
     return seriesPrefetched;
@@ -45,15 +45,15 @@ const parseSeriesInfo = async (url: string) => {
     throw new Error("Internal server error");
   }
   const seriesInfo = {
-    mangaId: mangaId,
+    manga_id: manga_id,
     ...(await parseFields($, seriesParsingConfig)),
   };
   await storeSeriesInfo(seriesInfo);
   return seriesInfo as MangaSeriesData;
 };
 
-const trySeriesPrefetch = async (mangaId: string) => {
-  const seriesPrefetched = await getSeriesInfo(mangaId);
+const trySeriesPrefetch = async (manga_id: string) => {
+  const seriesPrefetched = await getSeriesInfo(manga_id);
   if (seriesPrefetched) {
     console.log("Series info fetched from database", seriesPrefetched);
     return seriesPrefetched;

@@ -9,23 +9,23 @@ import {
 } from "../services/storage";
 
 /**
- * Parses the series information using the mangaId parameter from the request.
+ * Parses the series information using the manga_id parameter from the request.
  * @param req - The request object.
  * @param res - The response object.
  * @returns The parsed series information or an error response.
  */
 const seriesInfoController = async (req: Request, res: Response) => {
-  const { mangaId } = req.params;
+  const { manga_id } = req.params;
 
   // Check if the series information is already stored in the database
-  const seriesPrefetched = await getSeriesInfo(mangaId);
+  const seriesPrefetched = await getSeriesInfo(manga_id);
   if (seriesPrefetched) {
     res.status(200).json(seriesPrefetched);
     console.log("Series info fetched from database");
     return;
   }
 
-  const seriesUrl = getMangaUrl(mangaId);
+  const seriesUrl = getMangaUrl(manga_id);
   try {
     const $ = await extractPageHtml(seriesUrl);
     if (!$) {
@@ -33,7 +33,7 @@ const seriesInfoController = async (req: Request, res: Response) => {
       return;
     }
     const seriesInfo = {
-      mangaId: mangaId,
+      manga_id: manga_id,
       ...(await parseFields($, seriesParsingConfig)),
     };
     storeSeriesInfo(seriesInfo);
@@ -45,16 +45,16 @@ const seriesInfoController = async (req: Request, res: Response) => {
 };
 
 const fieldController = async (req: Request, res: Response) => {
-  const { mangaId, field } = req.params;
+  const { manga_id, field } = req.params;
 
   // Check if the field is already stored in the database
-  const seriesPrefetched = await fetchSeriesField(mangaId, field);
+  const seriesPrefetched = await fetchSeriesField(manga_id, field);
   if (seriesPrefetched) {
     res.status(200).json(seriesPrefetched);
     console.log("Field fetched from database");
     return;
   }
-  const seriesUrl = getMangaUrl(mangaId);
+  const seriesUrl = getMangaUrl(manga_id);
   try {
     const $ = await extractPageHtml(seriesUrl);
     if (!$) {

@@ -1,5 +1,5 @@
 export interface MangaSeriesData {
-  mangaId: string;
+  manga_id: string;
   title: string;
   author: string;
   image: string;
