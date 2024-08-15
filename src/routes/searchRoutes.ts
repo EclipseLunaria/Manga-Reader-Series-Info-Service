@@ -1,16 +1,17 @@
 import { Router } from "express";
 import {
-  findSeries,
+  newSearchSeries as searchSeries,
+  newestSeries,
+  popularSeries,
   latestSeries,
-  newSearchSeries,
 } from "../controllers/searchControllers";
 
 export const searchRouter = Router();
 
-// searchRouter.get("/", findSeries);
-
-searchRouter.get("/search", newSearchSeries);
+searchRouter.get("/search", searchSeries);
 
 searchRouter.get("/latest/update", latestSeries);
 
-searchRouter.get("/latest/added");
+searchRouter.get("/latest/added", newestSeries);
+
+searchRouter.get("/most/popular", popularSeries);

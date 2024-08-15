@@ -1,5 +1,5 @@
 import axios from "axios";
-import { load } from "cheerio";
+import { load, CheerioAPI } from "cheerio";
 import { seriesParsingConfig } from "../config/parsingConfig";
 import { parseFields } from "../services/parsing";
 import { MangaSeriesData } from "../models/seriesModels";
@@ -9,7 +9,7 @@ import { getSeriesInfo, storeSeriesInfo } from "../services/storage";
  * @param url - The URL of the web page to extract HTML from.
  * @returns A Promise that resolves to a Cheerio object representing the parsed HTML.
  */
-const extractPageHtml = async (url: string) => {
+const extractPageHtml = async (url: string): Promise<CheerioAPI> => {
   let html = "";
   try {
     const response = await axios.get(url);
