@@ -6,6 +6,7 @@ import {
   extractSearchResults,
   getSearchUrl,
 } from "../utils/search";
+import { SearchCategory } from "../types";
 
 const searchSeriesService = async (page: number, searchTerm: string) => {
   const seriesUrl = `https://manganato.com/search/story/${searchTerm
@@ -24,8 +25,8 @@ const searchSeriesService = async (page: number, searchTerm: string) => {
   return searchResponse;
 };
 
-const latestSeriesService = async (page: number) => {
-  const seriesUrl = getSearchUrl("last_uploaded", page);
+const latestSeriesService = async (page: number, type: SearchCategory) => {
+  const seriesUrl = getSearchUrl(type, page);
   console.log(seriesUrl);
   const $ = await extractPageHtml(seriesUrl);
   if (!$) {
