@@ -37,7 +37,7 @@ const seriesParsingConfig: ParsingConfig = {
     $(".row-content-chapter")
       .find("li")
       .map((i, elem) => ({
-        id: $(elem)
+        chapter_id: $(elem)
           .find("a")
           .attr("href")
           ?.split("/")
