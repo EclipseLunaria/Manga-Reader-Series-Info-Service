@@ -4,7 +4,7 @@ import { SearchCategory } from "../types";
 
 const getSearchUrl = (type: SearchCategory, page: number) => {
   switch (type) {
-    case "last_updated":
+    case "latest":
       console.log(page);
       return `https://manganato.com/genre-all/${page}`;
     case "popular":

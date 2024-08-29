@@ -1,1 +1,1 @@
-export type SearchCategory = "last_updated" | "popular" | "newest";
+export type SearchCategory = "latest" | "popular" | "newest";

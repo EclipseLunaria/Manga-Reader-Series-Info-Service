@@ -31,6 +31,6 @@ const getSeriesByType =
     }
   };
 
-export const latestSeries = getSeriesByType("last_updated");
+export const latestSeries = getSeriesByType("latest");
 export const popularSeries = getSeriesByType("popular");
 export const newestSeries = getSeriesByType("newest");
