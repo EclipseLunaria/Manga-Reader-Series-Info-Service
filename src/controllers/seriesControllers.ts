@@ -36,11 +36,10 @@ const seriesInfoController = async (req: Request, res: Response) => {
       manga_id: manga_id,
       ...(await parseFields($, seriesParsingConfig)),
     };
-    storeSeriesInfo(seriesInfo);
+    await storeSeriesInfo(seriesInfo);
     res.status(200).json(seriesInfo);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
-    return res;
   }
 };
 
