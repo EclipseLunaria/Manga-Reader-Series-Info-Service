@@ -7,13 +7,18 @@ import {
   getSeriesInfo,
   storeSeriesInfo,
 } from "../services/storage";
+import { getRandomSeries } from "../services/database";
 
-/**
- * Parses the series information using the manga_id parameter from the request.
- * @param req - The request object.
- * @param res - The response object.
- * @returns The parsed series information or an error response.
- */
+const randomSeriesController = async (req: Request, res: Response) => {
+  try {
+    const series_id = await getRandomSeries();
+    res.json(series_id);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+};
+
 const seriesInfoController = async (req: Request, res: Response) => {
   const { manga_id } = req.params;
 
@@ -72,4 +77,4 @@ const fieldController = async (req: Request, res: Response) => {
   }
 };
 
-export { seriesInfoController, fieldController };
+export { randomSeriesController, seriesInfoController, fieldController };

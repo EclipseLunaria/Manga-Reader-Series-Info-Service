@@ -1,16 +1,6 @@
 import axios from "axios";
 
-const hasSeriesInfo = async (seriesId: string) => {
-  try {
-    const response = await axios.get(
-      `http://localhost:${6999}/series/${seriesId}`
-    );
-    return response.status === 200;
-  } catch (error: any) {
-    console.log("Unable to check series information");
-    console.error(error.message);
-  }
-};
+
 
 const getSeriesInfo = async (seriesId: string) => {
   const url = `http://localhost:${6999}/series/${seriesId}`;
@@ -48,4 +38,4 @@ const storeSeriesInfo = async (seriesInfo: any) => {
   }
 };
 
-export { storeSeriesInfo, getSeriesInfo, hasSeriesInfo, fetchSeriesField };
+export { storeSeriesInfo, getSeriesInfo, fetchSeriesField };
